@@ -5,19 +5,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-/*
- * Tokenizer type.  You need to fill in the type as part of your implementation.
- */
-
-struct TokenizerT_ {
-  int *delimiters;
-  char *tokenString;
-  char *currPos;
-  char *token;
-};
-
-typedef struct TokenizerT_ TokenizerT;
-
 
 /*
  *This function finds escaped sequences in the command line
@@ -95,7 +82,7 @@ char *escapeSwitch(char *original, char *copy) {
 /*
  * TKCreate creates a new TokenizerT object for a given set of separator
  * characters (given as a string) and a token stream (given as a string).
- * 
+ *
  * TKCreate should copy the two arguments so that it is not dependent on
  * them staying immutable after returning.  (In the future, this may change
  * to increase efficiency.)
@@ -103,7 +90,6 @@ char *escapeSwitch(char *original, char *copy) {
  * If the function succeeds, it returns a non-NULL TokenizerT.
  * Else it returns NULL.
  *
- * You need to fill in this function as part of your implementation.
  */
 
 TokenizerT *TKCreate(char *separators, char *ts) {
@@ -132,7 +118,7 @@ TokenizerT *TKCreate(char *separators, char *ts) {
     free(tsCopy);
     return NULL;
   }
-  tokenBuffer = (char *)malloc(sizeof(char)*(11));
+  tokenBuffer = (char *)malloc(sizeof(char)*(51));
   if(tokenBuffer == NULL) {
     free(sepCopy);
     free(tsCopy);
@@ -147,7 +133,7 @@ TokenizerT *TKCreate(char *separators, char *ts) {
     free(tokenizer);
     return NULL;
   }
-  
+
   tsCopy = escapeSwitch(ts,tsCopy);
   sepCopy = escapeSwitch(separators,sepCopy);
 
@@ -167,7 +153,6 @@ TokenizerT *TKCreate(char *separators, char *ts) {
  * TKDestroy destroys a TokenizerT object.  It should free all dynamically
  * allocated memory that is part of the object being destroyed.
  *
- * You need to fill in this function as part of your implementation.
  */
 
 void TKDestroy(TokenizerT *tk) {
@@ -186,7 +171,6 @@ void TKDestroy(TokenizerT *tk) {
  * If the function succeeds, it returns a C string (delimited by '\0')
  * containing the token.  Else it returns 0.
  *
- * You need to fill in this function as part of your implementation.
  */
 
 char *TKGetNextToken(TokenizerT *tk) {
@@ -226,8 +210,8 @@ char *TKGetNextToken(TokenizerT *tk) {
  * beyond the current. Function returns 1 if there are any more tokens, and
  * 0 if there are not. Function accomplishes this by checking if end of input
  * string has been reached.
- * 
- * If the TokenizerT argument passed in is empty, function returns 0. If current * token is already empty (as it is for instance when there are not yet any 
+ *
+ * If the TokenizerT argument passed in is empty, function returns 0. If current * token is already empty (as it is for instance when there are not yet any
  * tokens), function returns 0.
  */
 
@@ -244,12 +228,12 @@ int TKHasNextToken(TokenizerT *tk) {
 }
 
 /*
- *This function prints each token character by character.
- *When it encounters an escape sequence, it instead prints out the
- *hexadecimal representation of the escaped sequence.
+ * This function prints each token character by character.
+ * When it encounters an escape sequence, it instead prints out the
+ * hexadecimal representation of the escaped sequence.
  *
- *This function takes in a token. It returns an int.
- *If given a null token, it prints nothing and returns 0.
+ * This function takes in a token. It returns an int.
+ * If given a null token, it prints nothing and returns 0.
  *
  */
 int escapeToHexMountain(char *token) {
@@ -270,22 +254,22 @@ int escapeToHexMountain(char *token) {
 	break;
       case '\n':
         printf("[0x0A]");
-	break; 
+	break;
       case '\r':
         printf("[0x0D]");
-	break; 
+	break;
       case '\t':
         printf("[0x09]");
-	break; 
+	break;
       case '\v':
         printf("[0x0B]");
-	break; 
+	break;
       case '\\':
         printf("[0x5C]");
-	break; 
+	break;
       case '\'':
         printf("[0x27]");
-	break; 
+	break;
       case '\"':
         printf("[0x22]");
 	break;
@@ -301,7 +285,7 @@ int escapeToHexMountain(char *token) {
   return 0;
 }
 
-int help() {
+int help(void) {
   printf("This help file does not yet exist.");
   return 0;
 }
@@ -345,6 +329,6 @@ int main(int argc, char **argv) {
     escapeToHexMountain(token);
   }
   TKDestroy(tokenizer);
-  
+
   return 0;
 }
